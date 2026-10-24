@@ -1,31 +1,50 @@
 import Link from "next/link";
-import { areaLabel } from "@/lib/format";
+import { SHOP_PHOTOS } from "@/lib/defaults";
 import { waNumber } from "@/lib/format";
-import type { Concept, SiteText } from "@/lib/types";
+import type { SiteText } from "@/lib/types";
+import { Photo } from "./Photo";
+import { SectionHead } from "./SectionHead";
 
-export function About({ text, concepts }: { text: SiteText; concepts: Concept[] }) {
+const P = SHOP_PHOTOS;
+const ABOUT_PHOTOS = [P.cephe, P.salon, P.neonLogo, P.vitrin, P.latte, P.koltuk];
+
+/** Metin alanındaki boş satırlar paragraf olarak gösterilir */
+function paragraphs(value: string): string[] {
+  return value
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
+export function About({ text }: { text: SiteText }) {
   return (
-    <section id="hakkimizda" aria-labelledby="hakkimizda-baslik" className="bg-paper">
-      <div className="mx-auto grid max-w-[1600px] gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-12 lg:px-12">
-        <p className="label text-copper-ink lg:col-span-12">Hakkımızda</p>
-        <h2 id="hakkimizda-baslik" data-reveal className="text-giga lg:col-span-8">
-          {text["about.title"]}
-        </h2>
-        <div className="lg:col-span-5 lg:col-start-8">
-          <p data-reveal className="text-xl leading-relaxed text-stone">
-            {text["about.body"]}
-          </p>
-          <ul className="mt-12 border-t border-line">
-            {concepts.map((c) => (
-              <li key={c.slug} className="flex items-baseline justify-between gap-6 border-b border-line py-4">
-                <Link href={`/konseptler/${c.slug}`} className="font-display text-2xl uppercase underline-offset-8 hover:underline">
-                  {c.name}
-                </Link>
-                <span className="label tabular text-stone">{areaLabel(c)}</span>
+    <section id="hakkimizda" aria-labelledby="hakkimizda-baslik" className="bg-paper py-20 sm:py-28">
+      <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <p className="label text-blue">Hakkımızda</p>
+          <h2 id="hakkimizda-baslik" className="mt-4 text-title uppercase">
+            {text["about.title"]}
+          </h2>
+          {paragraphs(text["about.body"]).map((p, i) => (
+            <p key={i} className="mt-6 text-lg text-muted sm:text-xl">
+              {p}
+            </p>
+          ))}
+          <Link href="/basvuru" className="btn-solid mt-10">
+            Bayilik Başvurusu <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
+
+        <figure className="lg:col-span-7">
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {ABOUT_PHOTOS.map((photo, i) => (
+              <li key={photo.url} data-reveal style={{ ["--delay" as string]: (i % 3) * 80 }} className="relative aspect-[3/4] overflow-hidden bg-white">
+                <Photo src={photo.url} alt={photo.alt} sizes="(min-width: 1280px) 240px, (min-width: 640px) 30vw, 50vw" />
               </li>
             ))}
           </ul>
-        </div>
+          <figcaption className="mt-3 text-muted">Fotoğraflar Coffee House şubesinden.</figcaption>
+        </figure>
       </div>
     </section>
   );
@@ -33,25 +52,19 @@ export function About({ text, concepts }: { text: SiteText; concepts: Concept[] 
 
 export function CtaBand({ text }: { text: SiteText }) {
   return (
-    <section aria-labelledby="cta-baslik" className="on-dark bg-espresso text-ivory">
-      <div className="mx-auto max-w-[1600px] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="grid gap-8 lg:grid-cols-12">
-          <p id="cta-baslik" className="text-2xl text-mist lg:col-span-6">
+    <section aria-labelledby="cta-baslik" className="on-dark bg-blue text-white">
+      <div className="shell grid gap-8 py-16 sm:py-20 lg:grid-cols-12 lg:items-center">
+        <div className="lg:col-span-8">
+          <h2 id="cta-baslik" className="text-title uppercase">
             {text["cta.title"]}
-          </p>
-          <p className="text-mist lg:col-span-4 lg:col-start-9">{text["cta.body"]}</p>
+          </h2>
+          <p className="mt-4 max-w-2xl text-lg text-white/90 sm:text-xl">{text["cta.body"]}</p>
         </div>
-        <Link
-          href="/basvuru"
-          className="group mt-14 flex items-end justify-between gap-6 border-y border-line-dark py-8 sm:py-12"
-        >
-          <span className="font-display text-giga uppercase leading-[1.14] transition-colors duration-500 group-hover:text-copper-light">
-            Bayilik başvurusu
-          </span>
-          <span aria-hidden="true" className="font-display text-giga leading-[0.9] text-copper-light">
-            ↗
-          </span>
-        </Link>
+        <div className="lg:col-span-4 lg:justify-self-end">
+          <Link href="/basvuru" className="btn-white w-full sm:w-auto">
+            Bayilik Başvurusu <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
@@ -83,26 +96,23 @@ export function Contact({ text }: { text: SiteText }) {
   ].filter(Boolean) as { label: string; value: string; href?: string; external?: boolean }[];
 
   return (
-    <section id="iletisim" aria-labelledby="iletisim-baslik" className="bg-ivory">
-      <div className="mx-auto grid max-w-[1600px] gap-12 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-12 lg:px-12">
-        <div className="lg:col-span-4">
-          <p className="label text-copper-ink">İletişim</p>
-          <h2 id="iletisim-baslik" className="mt-6 text-title uppercase">
-            Bize ulaşın.
-          </h2>
-        </div>
-        <dl className="grid border-t border-line sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+    <section id="iletisim" aria-labelledby="iletisim-baslik" className="bg-paper py-20 sm:py-28">
+      <div className="shell grid gap-12 lg:grid-cols-12">
+        <SectionHead id="iletisim-baslik" label="İletişim" title="Bize ulaşın" className="lg:col-span-5">
+          Sorularınız için bize yazın ya da doğrudan başvurunuzu bırakın.
+        </SectionHead>
+        <dl className="grid gap-3 sm:grid-cols-2 lg:col-span-7">
           {items.map((item) => (
-            <div key={item.label} className="border-b border-line py-6 sm:odd:border-r sm:odd:pr-8 sm:even:pl-8">
-              <dt className="label text-stone" lang={item.label === "Instagram" ? "en" : undefined}>
+            <div key={item.label} className="border border-line bg-white p-6">
+              <dt className="label text-muted" lang={item.label === "Instagram" || item.label === "WhatsApp" ? "en" : undefined}>
                 {item.label}
               </dt>
-              <dd className="mt-2 break-words font-display text-2xl">
+              <dd className="mt-2 break-words text-xl font-semibold">
                 {item.href ? (
                   <a
                     href={item.href}
                     {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="underline-offset-8 hover:underline"
+                    className="text-blue underline-offset-4 hover:underline"
                   >
                     {item.value}
                     {item.external && <span aria-hidden="true"> ↗</span>}

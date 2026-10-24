@@ -30,6 +30,8 @@ export const CONTENT_KEYS = [
   "hero.line2",
   "hero.line3",
   "hero.subtitle",
+  "hero.video_url",
+  "hero.video_wide_url",
   "about.title",
   "about.body",
   "cta.title",

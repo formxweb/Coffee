@@ -40,7 +40,7 @@ const dayLong = new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "long"
 function Tile({ label, value, children, hero = false }: { label: string; value: number; children?: React.ReactNode; hero?: boolean }) {
   return (
     <div className="border-b border-line py-6 sm:border-b-0 sm:border-r sm:pr-6 sm:last:border-r-0">
-      <p className="text-sm text-stone">{label}</p>
+      <p className="text-sm text-muted">{label}</p>
       <p className={`mt-2 font-sans font-medium text-ink ${hero ? "text-6xl" : "text-4xl"}`}>{fmt.format(value)}</p>
       {children}
     </div>
@@ -50,7 +50,7 @@ function Tile({ label, value, children, hero = false }: { label: string; value: 
 function Panel({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
   return (
     <section className={`border-t border-line pt-6 ${className}`}>
-      <h2 className="label text-stone">{title}</h2>
+      <h2 className="label text-muted">{title}</h2>
       <div className="mt-6">{children}</div>
     </section>
   );
@@ -103,7 +103,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
             key={p.value}
             href={p.value === "30" ? "/admin" : `/admin?donem=${p.value}`}
             aria-current={p.value === period ? "page" : undefined}
-            className={`text-sm ${p.value === period ? "font-medium text-ink underline decoration-copper decoration-2 underline-offset-8" : "text-stone hover:text-ink"}`}
+            className={`text-sm ${p.value === period ? "font-medium text-ink underline decoration-blue decoration-2 underline-offset-8" : "text-muted hover:text-ink"}`}
           >
             {p.label}
           </Link>
@@ -113,7 +113,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
       <div className="grid sm:grid-cols-4">
         <Tile label={`Başvurular (${periodLabel})`} value={s.period} hero>
           {delta !== null && (
-            <p className={`mt-2 text-sm ${delta > 0 ? "text-success" : delta < 0 ? "text-danger" : "text-stone"}`}>
+            <p className={`mt-2 text-sm ${delta > 0 ? "text-success" : delta < 0 ? "text-danger" : "text-muted"}`}>
               {delta > 0 ? "▲" : delta < 0 ? "▼" : "■"} {delta > 0 ? "+" : ""}
               {fmt.format(delta)} önceki döneme göre
             </p>
@@ -121,7 +121,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
         </Tile>
         <Tile label="Yanıt bekleyen (yeni)" value={s.new}>
           {s.new > 0 && (
-            <Link href="/admin/basvurular?durum=new" className="mt-2 inline-block text-sm text-copper-ink underline underline-offset-4">
+            <Link href="/admin/basvurular?durum=new" className="mt-2 inline-block text-sm text-blue-ink underline underline-offset-4">
               Listeyi aç
             </Link>
           )}
@@ -159,7 +159,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
-                <tr className="border-b border-line text-stone">
+                <tr className="border-b border-line text-muted">
                   <th scope="col" className="py-3 pr-4 font-normal">Tarih</th>
                   <th scope="col" className="py-3 pr-4 font-normal">Ad Soyad</th>
                   <th scope="col" className="py-3 pr-4 font-normal">Lokasyon</th>
@@ -171,7 +171,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
               <tbody>
                 {recent.data.map((a) => (
                   <tr key={a.id} className="border-b border-line">
-                    <td className="py-3 pr-4 text-stone tabular">{formatDateTime(a.created_at)}</td>
+                    <td className="py-3 pr-4 text-muted tabular">{formatDateTime(a.created_at)}</td>
                     <td className="py-3 pr-4">
                       <Link href={`/admin/basvurular/${a.id}`} className="text-ink underline-offset-4 hover:underline">
                         {a.full_name}
@@ -191,7 +191,7 @@ async function Dashboard({ searchParams }: { searchParams: Promise<Record<string
             </table>
           </div>
         ) : (
-          <p className="text-stone">Henüz başvuru yok. Yeni başvurular geldiğinde burada ve bildirim olarak görünür.</p>
+          <p className="text-muted">Henüz başvuru yok. Yeni başvurular geldiğinde burada ve bildirim olarak görünür.</p>
         )}
       </Panel>
     </div>

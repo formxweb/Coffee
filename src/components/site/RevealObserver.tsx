@@ -3,12 +3,12 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-/** [data-reveal] ve [data-reveal-lines] öğelerini görünür olduklarında açar. */
+/** [data-reveal] öğelerini görünür olduklarında açar. */
 export function RevealObserver() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in), [data-reveal-lines]:not(.is-in)");
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)");
     if (!("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("is-in"));
       return;

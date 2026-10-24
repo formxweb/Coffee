@@ -12,7 +12,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     <>
       <a
         href="#icerik"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:bg-ivory focus:px-4 focus:py-3 focus:text-ink"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:bg-white focus:px-4 focus:py-3 focus:text-ink"
       >
         İçeriğe geç
       </a>

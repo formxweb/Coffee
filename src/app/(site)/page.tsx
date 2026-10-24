@@ -1,7 +1,6 @@
-import { ConceptShowcase } from "@/components/site/ConceptShowcase";
+import { ConceptList } from "@/components/site/ConceptList";
 import { Hero } from "@/components/site/Hero";
 import { About, Contact, CtaBand } from "@/components/site/HomeSections";
-import { IntroOverlay } from "@/components/site/IntroOverlay";
 import { InvestmentSelector } from "@/components/site/InvestmentSelector";
 import { Journey } from "@/components/site/Journey";
 import { getSiteData } from "@/lib/content";
@@ -19,12 +18,11 @@ export default async function HomePage() {
 
   return (
     <>
-      <IntroOverlay />
-      <Hero concepts={concepts} lines={[text["hero.line1"], text["hero.line2"], text["hero.line3"]]} subtitle={text["hero.subtitle"]} />
-      <ConceptShowcase concepts={concepts} />
-      <InvestmentSelector concepts={concepts} />
+      <Hero text={text} concepts={concepts} />
+      <ConceptList concepts={concepts} />
+      <About text={text} />
       <Journey steps={journey} />
-      <About text={text} concepts={concepts} />
+      <InvestmentSelector concepts={concepts} />
       <CtaBand text={text} />
       <Contact text={text} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />

@@ -1,18 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Jost } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { SITE_URL } from "@/lib/env";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({
-  variable: "--font-bodoni",
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin", "latin-ext"],
-  axes: ["opsz"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const jost = Jost({
-  variable: "--font-jost",
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
   subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -36,16 +37,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1b1411",
+  themeColor: "#0f1d38",
   colorScheme: "light",
 };
 
-// İlk boyamadan önce: JS sınıfı ve oturumda bir kez oynayan açılış animasyonu
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!sessionStorage.getItem('ch-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('intro-play');sessionStorage.setItem('ch-intro','1');setTimeout(function(){d.classList.remove('intro-play')},3200)}}catch(e){}})();`;
+// İlk boyamadan önce: kaydırınca beliren öğeler yalnızca JS çalışıyorsa gizlenir
+const bootScript = `document.documentElement.classList.add('js');`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={`${bodoni.variable} ${jost.variable}`} suppressHydrationWarning>
+    <html lang="tr" className={`${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>

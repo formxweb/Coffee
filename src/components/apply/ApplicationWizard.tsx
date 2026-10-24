@@ -6,7 +6,7 @@ import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { normalizePhone } from "@/lib/application-schema";
 import { readAttribution } from "@/lib/attribution";
-import { areaLabel, priceLabel } from "@/lib/format";
+import { areaLabel, priceShort } from "@/lib/format";
 import { BUDGETS, PROPERTY_OPTIONS, budgetLabel, type BudgetValue, type PropertyValue } from "@/lib/options";
 import { ILLER, IL_ILCE } from "@/lib/tr-locations";
 import type { Concept } from "@/lib/types";
@@ -106,7 +106,6 @@ function ChoiceRow({
   onPick,
   title,
   meta,
-  index,
   describedBy,
 }: {
   name: string;
@@ -116,13 +115,12 @@ function ChoiceRow({
   onPick: () => void;
   title: string;
   meta?: string;
-  index: string;
   describedBy?: string;
 }) {
   return (
     <label
-      className={`group grid cursor-pointer grid-cols-[2rem_1fr_auto] items-baseline gap-4 border-b border-line py-5 transition-colors sm:grid-cols-[3rem_1fr_auto] ${
-        checked ? "text-ink" : "text-stone hover:text-ink"
+      className={`flex min-h-[4.5rem] cursor-pointer items-center gap-4 border-2 px-5 py-4 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue ${
+        checked ? "border-blue bg-blue text-white" : "border-line bg-white hover:border-blue"
       }`}
     >
       <input
@@ -138,12 +136,16 @@ function ChoiceRow({
         aria-describedby={describedBy}
         className="peer sr-only"
       />
-      <span className="label tabular">{index}</span>
-      <span className="font-display text-3xl uppercase leading-none peer-focus-visible:underline peer-focus-visible:decoration-copper peer-focus-visible:underline-offset-8 sm:text-5xl">
-        {title}
-        {meta && <span className="mt-2 block font-sans text-sm normal-case tracking-normal text-stone tabular">{meta}</span>}
+      <span className="flex-1">
+        <span className="block font-display text-2xl font-semibold uppercase leading-tight sm:text-3xl">{title}</span>
+        {meta && <span className={`mt-1 block tabular ${checked ? "text-white/85" : "text-muted"}`}>{meta}</span>}
       </span>
-      <span aria-hidden="true" className={`h-3.5 w-3.5 border border-current ${checked ? "border-copper bg-copper" : ""}`} />
+      <span
+        aria-hidden="true"
+        className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 ${checked ? "border-white" : "border-field"}`}
+      >
+        {checked && <span className="h-2.5 w-2.5 rounded-full bg-white" />}
+      </span>
     </label>
   );
 }
@@ -330,24 +332,24 @@ export function ApplicationWizard({ concepts, contact }: Props) {
 
   if (status === "done") {
     return (
-      <section className="mx-auto max-w-[1600px] px-5 pb-24 pt-28 sm:px-8 sm:pt-36 lg:px-12" aria-live="polite">
-        <div className="h-px w-full bg-copper" aria-hidden="true" />
+      <section className="shell pb-24 pt-28 sm:pt-36" aria-live="polite">
+        <div className="h-px w-full bg-blue" aria-hidden="true" />
         <div className="grid gap-12 pt-16 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <p className="label text-copper-ink">Başvurunuz alındı</p>
-            <h1 ref={headingRef} tabIndex={-1} className="mt-6 text-giga uppercase outline-none">
+            <p className="label text-blue-ink">Başvurunuz alındı</p>
+            <h1 ref={headingRef} tabIndex={-1} className="mt-6 text-title uppercase outline-none">
               Teşekkürler{values.full_name ? `, ${values.full_name.trim().split(/\s+/)[0]}` : ""}.
             </h1>
-            <p className="mt-8 max-w-lg text-xl text-stone">
+            <p className="mt-8 max-w-lg text-xl text-muted">
               Bayilik başvurunuz kaydedildi. Ekibimiz ön görüşme için verdiğiniz telefon numarasından sizinle iletişime geçecek.
             </p>
           </div>
           <div className="lg:col-span-5">
-            <p className="label text-stone">Başvuru referans numarası</p>
+            <p className="label text-muted">Başvuru referans numarası</p>
             <p className="mt-4 select-all font-display text-5xl tabular tracking-[0.04em] sm:text-6xl" data-testid="ref-code">
               {refCode}
             </p>
-            <p className="mt-4 text-stone">Bu numarayı not edin; görüşmelerde başvurunuzu hızlıca bulmamızı sağlar.</p>
+            <p className="mt-4 text-muted">Bu numarayı not edin; görüşmelerde başvurunuzu hızlıca bulmamızı sağlar.</p>
             <div className="mt-10 grid gap-3">
               <Link href="/#yatirim-sureci" className="btn-line">
                 Yatırım sürecini inceleyin <span aria-hidden="true">↗</span>
@@ -366,11 +368,11 @@ export function ApplicationWizard({ concepts, contact }: Props) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <form onSubmit={submit} noValidate className="mx-auto max-w-[1600px] px-5 pb-24 pt-24 sm:px-8 sm:pt-32 lg:px-12">
+      <form onSubmit={submit} noValidate className="shell pb-24 pt-24 sm:pt-32">
         {/* İlerleme çizgisi */}
-        <div className="sticky top-16 z-20 -mx-5 bg-ivory px-5 pb-4 pt-4 sm:top-20 sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12">
+        <div className="sticky top-16 z-20 -mx-5 bg-white px-5 pb-4 pt-4 sm:top-20 sm:-mx-8 sm:px-8">
           <div className="flex items-baseline justify-between gap-4">
-            <p className="label tabular text-copper-ink">
+            <p className="label tabular text-blue-ink">
               Adım {step + 1} / {STEPS.length} · {current.label}
             </p>
             <ol className="hidden gap-6 lg:flex" aria-label="Başvuru adımları">
@@ -381,7 +383,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                     disabled={i > step}
                     onClick={() => setStep(i)}
                     aria-current={i === step ? "step" : undefined}
-                    className={`label ${i === step ? "text-ink" : i < step ? "text-stone hover:text-ink" : "text-stone/50"}`}
+                    className={`label ${i === step ? "text-ink" : i < step ? "text-muted hover:text-ink" : "text-muted/50"}`}
                   >
                     {String(i + 1).padStart(2, "0")} {s.label}
                   </button>
@@ -390,7 +392,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
             </ol>
           </div>
           <div
-            className="relative mt-3 h-px bg-line"
+            className="relative mt-3 h-1 bg-line"
             role="progressbar"
             aria-label="Başvuru ilerlemesi"
             aria-valuemin={0}
@@ -398,7 +400,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
             aria-valuenow={step + 1}
           >
             <motion.div
-              className="absolute inset-y-[-1px] left-0 origin-left bg-copper"
+              className="absolute inset-y-0 left-0 origin-left bg-blue"
               initial={false}
               animate={{ width: `${progress * 100}%` }}
               transition={{ duration: 0.5, ease: [0.22, 0.8, 0.2, 1] }}
@@ -417,23 +419,22 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                 transition={{ duration: 0.28, ease: [0.22, 0.8, 0.2, 1] }}
               >
                 <legend className="sr-only">{current.question}</legend>
-                <h1 ref={headingRef} tabIndex={-1} className="max-w-[18ch] text-title outline-none">
+                <h1 ref={headingRef} tabIndex={-1} className="max-w-[22ch] text-4xl uppercase outline-none sm:text-5xl">
                   {current.question}
                 </h1>
 
                 <div className="mt-12">
                   {current.key === "concept" && (
-                    <div role="radiogroup" aria-labelledby={`${uid}-concept-label`} className="border-t border-line">
+                    <div role="radiogroup" aria-labelledby={`${uid}-concept-label`} className="grid gap-3 sm:grid-cols-2">
                       <span id={`${uid}-concept-label`} className="sr-only">
                         Konsept
                       </span>
-                      {[...concepts.map((c) => ({ value: c.slug, title: c.name, meta: `${areaLabel(c)} · ${priceLabel(c)}` })), { value: "undecided", title: "Kararsızım", meta: "Ön görüşmede birlikte belirleyelim" }].map(
-                        (o, i) => (
+                      {[...concepts.map((c) => ({ value: c.slug, title: c.name, meta: `${areaLabel(c)} · ${priceShort(c)}` })), { value: "undecided", title: "Kararsızım", meta: "Ön görüşmede birlikte belirleyelim" }].map(
+                        (o) => (
                           <ChoiceRow
                             key={o.value}
                             name={`${uid}-concept`}
                             value={o.value}
-                            index={String(i + 1).padStart(2, "0")}
                             title={o.title}
                             meta={o.meta}
                             checked={values.concept === o.value}
@@ -450,7 +451,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                   {current.key === "location" && (
                     <div className="grid gap-10 sm:grid-cols-2">
                       <div>
-                        <label htmlFor={`${uid}-city`} className="label text-stone">
+                        <label htmlFor={`${uid}-city`} className="block text-lg font-semibold">
                           İl
                         </label>
                         <select
@@ -475,7 +476,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                         {fieldError("city")}
                       </div>
                       <div>
-                        <label htmlFor={`${uid}-district`} className="label text-stone">
+                        <label htmlFor={`${uid}-district`} className="block text-lg font-semibold">
                           İlçe
                         </label>
                         <select
@@ -501,13 +502,12 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                   )}
 
                   {current.key === "budget" && (
-                    <div role="radiogroup" aria-label="Bütçe aralığı" className="border-t border-line">
-                      {BUDGETS.map((b, i) => (
+                    <div role="radiogroup" aria-label="Bütçe aralığı" className="grid gap-3 sm:grid-cols-2">
+                      {BUDGETS.map((b) => (
                         <ChoiceRow
                           key={b.value}
                           name={`${uid}-budget`}
                           value={b.value}
-                          index={String.fromCharCode(65 + i)}
                           title={b.label}
                           checked={values.budget === b.value}
                           onSelect={() => set("budget", b.value as BudgetValue)}
@@ -520,13 +520,12 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                   )}
 
                   {current.key === "property" && (
-                    <div role="radiogroup" aria-label="Mülk durumu" className="border-t border-line">
-                      {PROPERTY_OPTIONS.map((p, i) => (
+                    <div role="radiogroup" aria-label="Mülk durumu" className="grid gap-3 sm:grid-cols-2">
+                      {PROPERTY_OPTIONS.map((p) => (
                         <ChoiceRow
                           key={p.value}
                           name={`${uid}-property_status`}
                           value={p.value}
-                          index={String.fromCharCode(65 + i)}
                           title={p.value === "ready" ? "Hazır dükkânım var" : "Dükkânım yok"}
                           meta={p.value === "ready" ? "Kiralık ya da mülkiyetimde bir dükkân" : "Lokasyon desteği istiyorum"}
                           checked={values.property_status === p.value}
@@ -542,7 +541,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                   {current.key === "contact" && (
                     <div className="grid gap-10 sm:grid-cols-2">
                       <div className="sm:col-span-2">
-                        <label htmlFor={`${uid}-full_name`} className="label text-stone">
+                        <label htmlFor={`${uid}-full_name`} className="block text-lg font-semibold">
                           Ad Soyad
                         </label>
                         <input
@@ -561,7 +560,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                         {fieldError("full_name")}
                       </div>
                       <div>
-                        <label htmlFor={`${uid}-phone`} className="label text-stone">
+                        <label htmlFor={`${uid}-phone`} className="block text-lg font-semibold">
                           Telefon
                         </label>
                         <input
@@ -584,14 +583,14 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                           }}
                           onBlur={() => setErrors((er) => ({ ...er, phone: values.phone ? validateField("phone", values) : er.phone }))}
                         />
-                        <p id={`${uid}-phone-ipucu`} className="mt-3 text-sm text-stone">
+                        <p id={`${uid}-phone-ipucu`} className="mt-3 text-sm text-muted">
                           Ön görüşme için sizi bu numaradan arayacağız.
                         </p>
                         {fieldError("phone")}
                       </div>
                       <div>
-                        <label htmlFor={`${uid}-email`} className="label text-stone">
-                          E-posta <span className="normal-case tracking-normal">(isteğe bağlı)</span>
+                        <label htmlFor={`${uid}-email`} className="block text-lg font-semibold">
+                          E-posta <span className="font-normal text-muted">(isteğe bağlı)</span>
                         </label>
                         <input
                           id={`${uid}-email`}
@@ -609,8 +608,8 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                         {fieldError("email")}
                       </div>
                       <div className="sm:col-span-2">
-                        <label htmlFor={`${uid}-note`} className="label text-stone">
-                          Ek açıklama <span className="normal-case tracking-normal">(isteğe bağlı)</span>
+                        <label htmlFor={`${uid}-note`} className="block text-lg font-semibold">
+                          Ek açıklama <span className="font-normal text-muted">(isteğe bağlı)</span>
                         </label>
                         <textarea
                           id={`${uid}-note`}
@@ -621,7 +620,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                           aria-describedby={`${uid}-note-sayac`}
                           onChange={(e) => set("note", e.target.value)}
                         />
-                        <p id={`${uid}-note-sayac`} className="mt-2 text-right text-xs text-stone tabular">
+                        <p id={`${uid}-note-sayac`} className="mt-2 text-right text-xs text-muted tabular">
                           {values.note.length} / 1000
                         </p>
                       </div>
@@ -630,24 +629,24 @@ export function ApplicationWizard({ concepts, contact }: Props) {
                           <input
                             id={`${uid}-kvkk_consent`}
                             type="checkbox"
-                            className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-copper)]"
+                            className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-blue)]"
                             checked={values.kvkk_consent}
                             aria-invalid={Boolean(errors.kvkk_consent)}
                             aria-describedby={errors.kvkk_consent ? errId("kvkk_consent") : undefined}
                             onChange={(e) => set("kvkk_consent", e.target.checked)}
                           />
                           <span>
-                            <Link href="/kvkk" target="_blank" className="text-copper-ink underline underline-offset-4">
+                            <Link href="/kvkk" target="_blank" className="text-blue-ink underline underline-offset-4">
                               KVKK Aydınlatma Metni
                             </Link>
                             ’ni okudum; başvurumun değerlendirilmesi için benimle iletişime geçilmesini kabul ediyorum.
                           </span>
                         </label>
                         {fieldError("kvkk_consent")}
-                        <label className="flex cursor-pointer items-start gap-4 text-base text-stone">
+                        <label className="flex cursor-pointer items-start gap-4 text-base text-muted">
                           <input
                             type="checkbox"
-                            className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-copper)]"
+                            className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-blue)]"
                             checked={values.marketing_consent}
                             onChange={(e) => set("marketing_consent", e.target.checked)}
                           />
@@ -669,7 +668,7 @@ export function ApplicationWizard({ concepts, contact }: Props) {
               <div role="alert" className="mt-10 border border-danger/50 bg-paper px-5 py-4 text-ink">
                 <p>{serverError}</p>
                 {(contact.phone || contact.whatsapp || contact.email) && (
-                  <p className="mt-2 text-sm text-stone">
+                  <p className="mt-2 text-sm text-muted">
                     Dilerseniz bize doğrudan ulaşın:{" "}
                     {[contact.phone && `Telefon ${contact.phone}`, contact.whatsapp && `WhatsApp ${contact.whatsapp}`, contact.email]
                       .filter(Boolean)
@@ -682,14 +681,14 @@ export function ApplicationWizard({ concepts, contact }: Props) {
             <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
               <button
                 type="button"
-                className="label py-3 text-stone hover:text-ink disabled:invisible"
+                className="py-3 text-lg font-semibold text-muted hover:text-ink disabled:invisible"
                 onClick={() => setStep((s) => Math.max(0, s - 1))}
                 disabled={step === 0 || status === "submitting"}
               >
                 ← Geri
               </button>
               {step < STEPS.length - 1 ? (
-                <button type="submit" className="btn-line min-w-48">
+                <button type="submit" className="btn-solid min-w-48">
                   Devam <span aria-hidden="true">↗</span>
                 </button>
               ) : (
@@ -702,24 +701,24 @@ export function ApplicationWizard({ concepts, contact }: Props) {
 
           <aside className="lg:col-span-3 lg:col-start-10" aria-label="Seçimleriniz">
             <div className="lg:sticky lg:top-44">
-              <p className="label text-stone">Seçimleriniz</p>
+              <p className="label text-muted">Seçimleriniz</p>
               <dl className="mt-4 border-t border-line">
                 {summary.map((s) => (
                   <div key={s.label} className="flex items-baseline justify-between gap-4 border-b border-line py-4">
-                    <dt className="label text-stone">{s.label}</dt>
+                    <dt className="label text-muted">{s.label}</dt>
                     <dd className="text-right">
                       {s.value ? (
                         <button type="button" onClick={() => setStep(s.step)} className="text-ink underline-offset-4 hover:underline">
                           {s.value}
                         </button>
                       ) : (
-                        <span className="text-stone/70">Seçilmedi</span>
+                        <span className="text-muted/70">Seçilmedi</span>
                       )}
                     </dd>
                   </div>
                 ))}
               </dl>
-              <p className="mt-6 text-sm text-stone">Başvuru formu herhangi bir ödeme ya da bağlayıcı taahhüt içermez.</p>
+              <p className="mt-6 text-sm text-muted">Başvuru formu herhangi bir ödeme ya da bağlayıcı taahhüt içermez.</p>
             </div>
           </aside>
         </div>

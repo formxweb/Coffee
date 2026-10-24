@@ -32,7 +32,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
         {title}: toplam {fmt.format(total)} {unit}
       </figcaption>
       <div
-        className="relative mt-2 grid grid-cols-[2.5rem_1fr] outline-none focus-visible:outline-2 focus-visible:outline-copper"
+        className="relative mt-2 grid grid-cols-[2.5rem_1fr] outline-none focus-visible:outline-2 focus-visible:outline-blue"
         tabIndex={0}
         role="group"
         aria-label={`${title}. Sol ve sağ ok tuşlarıyla günler arasında gezinin.`}
@@ -47,7 +47,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
         onBlur={() => setActive(null)}
         onPointerLeave={() => setActive(null)}
       >
-        <div className="relative h-56 text-right text-xs text-stone tabular" aria-hidden="true">
+        <div className="relative h-56 text-right text-xs text-muted tabular" aria-hidden="true">
           {ticks.map((t) => (
             <span key={t} className="absolute right-3" style={{ bottom: `${(t / top) * 100}%`, transform: "translateY(50%)" }}>
               {fmt.format(t)}
@@ -67,7 +67,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
                 onPointerDown={() => setActive(i)}
               >
                 <div
-                  className={`w-full max-w-6 rounded-t-[4px] transition-opacity ${active === null || active === i ? "opacity-100" : "opacity-55"} bg-copper`}
+                  className={`w-full max-w-6 rounded-t-[4px] transition-opacity ${active === null || active === i ? "opacity-100" : "opacity-55"} bg-blue`}
                   style={{ height: d.value ? `${(d.value / top) * 100}%` : 0 }}
                 />
               </div>
@@ -81,12 +81,12 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
               <p className="text-base font-medium text-ink tabular">
                 {fmt.format(current.value)} {unit}
               </p>
-              <p className="text-xs text-stone">{current.detail ?? current.label}</p>
+              <p className="text-xs text-muted">{current.detail ?? current.label}</p>
             </div>
           )}
         </div>
         <div />
-        <div className="relative mt-2 h-5 text-xs text-stone" aria-hidden="true">
+        <div className="relative mt-2 h-5 text-xs text-muted" aria-hidden="true">
           {data.map((d, i) =>
             labelIdx.has(i) ? (
               <span
@@ -104,7 +104,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
         {current ? `${current.detail ?? current.label}: ${current.value} ${unit}` : ""}
       </p>
       <details className="mt-4 text-sm">
-        <summary className="cursor-pointer text-stone hover:text-ink">Tablo olarak göster</summary>
+        <summary className="cursor-pointer text-muted hover:text-ink">Tablo olarak göster</summary>
         <div className="mt-3 max-h-64 overflow-auto border-t border-line">
           <table className="w-full text-left tabular">
             <thead className="sr-only">
@@ -116,7 +116,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
             <tbody>
               {data.map((d) => (
                 <tr key={d.key} className="border-b border-line">
-                  <td className="py-1.5 text-stone">{d.detail ?? d.label}</td>
+                  <td className="py-1.5 text-muted">{d.detail ?? d.label}</td>
                   <td className="py-1.5 text-right text-ink">{fmt.format(d.value)}</td>
                 </tr>
               ))}
@@ -131,7 +131,7 @@ export function ColumnChart({ data, title, unit = "başvuru" }: { data: Datum[];
 /** Kategori karşılaştırması için yatay çubuklar: tek renk, değer çubuğun ucunda. */
 export function BarList({ data, title, empty = "Bu dönemde veri yok." }: { data: Datum[]; title: string; empty?: string }) {
   const max = Math.max(0, ...data.map((d) => d.value));
-  if (max === 0) return <p className="py-6 text-sm text-stone">{empty}</p>;
+  if (max === 0) return <p className="py-6 text-sm text-muted">{empty}</p>;
   return (
     <figure>
       <figcaption className="sr-only">{title}</figcaption>
@@ -144,10 +144,10 @@ export function BarList({ data, title, empty = "Bu dönemde veri yok." }: { data
             <span className="flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="block h-3 rounded-r-[4px] bg-copper"
+                className="block h-3 rounded-r-[4px] bg-blue"
                 style={{ width: d.value ? `max(4px, ${(d.value / max) * 85}%)` : 0 }}
               />
-              <span className="text-sm text-stone tabular">
+              <span className="text-sm text-muted tabular">
                 <span className="sr-only">{d.label}: </span>
                 {fmt.format(d.value)}
               </span>

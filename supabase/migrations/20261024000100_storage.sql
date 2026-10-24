@@ -1,4 +1,4 @@
--- Site görselleri için depolama alanı: herkes görselleri açabilir, yalnızca yöneticiler yükler ve siler.
+-- Site görselleri ve giriş videosu için depolama alanı: herkes dosyaları açabilir, yalnızca yöneticiler yükler ve siler.
 -- Herkese açık kova olduğu için dosyalar listeleme izni olmadan /object/public/ adresinden sunulur.
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
@@ -6,8 +6,8 @@ values (
   'site-media',
   'site-media',
   true,
-  10485760,
-  array['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/svg+xml']
+  52428800,
+  array['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/svg+xml', 'video/mp4', 'video/webm']
 )
 on conflict (id) do nothing;
 

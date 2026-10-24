@@ -51,13 +51,13 @@ function HeaderInner({ logoUrl, pathname }: { logoUrl?: string; pathname: string
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         open
-          ? "bg-espresso text-ivory on-dark"
+          ? "bg-navy text-white on-dark"
           : overDark
-            ? "bg-transparent text-ivory on-dark"
-            : "border-b border-line bg-ivory text-ink"
+            ? "bg-transparent text-white on-dark"
+            : "border-b border-line bg-white text-ink"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-6 px-5 sm:h-20 sm:px-8 lg:px-12">
+      <div className="shell flex h-16 items-center gap-8 sm:h-20">
         <Link href="/" className="mr-auto" aria-label="Coffee House ana sayfa" onClick={() => setOpen(false)}>
           <Wordmark logoUrl={logoUrl} />
         </Link>
@@ -66,7 +66,7 @@ function HeaderInner({ logoUrl, pathname }: { logoUrl?: string; pathname: string
           <ul className="flex items-center gap-8">
             {NAV.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="label opacity-80 transition-opacity hover:opacity-100">
+                <Link href={item.href} className="text-[1.0625rem] font-medium underline-offset-8 hover:underline">
                   {item.label}
                 </Link>
               </li>
@@ -74,7 +74,7 @@ function HeaderInner({ logoUrl, pathname }: { logoUrl?: string; pathname: string
           </ul>
         </nav>
 
-        <Link href="/basvuru" className="btn-solid hidden !min-h-11 !py-2.5 sm:inline-flex">
+        <Link href="/basvuru" className={`${overDark ? "btn-white" : "btn-solid"} hidden !min-h-11 !px-5 !py-2 sm:inline-flex`}>
           Bayilik Başvurusu <span aria-hidden="true">↗</span>
         </Link>
 
@@ -91,24 +91,23 @@ function HeaderInner({ logoUrl, pathname }: { logoUrl?: string; pathname: string
         </button>
       </div>
 
-      <div id="mobil-menu" hidden={!open} className="h-[calc(100svh-4rem)] overflow-y-auto bg-espresso px-5 pb-10 sm:h-[calc(100svh-5rem)] sm:px-8 lg:hidden">
+      <div id="mobil-menu" hidden={!open} className="h-[calc(100svh-4rem)] overflow-y-auto bg-navy px-5 pb-10 sm:h-[calc(100svh-5rem)] sm:px-8 lg:hidden">
         <nav aria-label="Mobil menü" className="border-t border-line-dark">
           <ul>
-            {NAV.map((item, i) => (
+            {NAV.map((item) => (
               <li key={item.href} className="border-b border-line-dark">
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-baseline gap-5 py-5 font-display text-4xl uppercase"
+                  className="block py-5 font-display text-4xl font-semibold uppercase"
                 >
-                  <span className="label text-mist">0{i + 1}</span>
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <Link href="/basvuru" onClick={() => setOpen(false)} className="btn-solid mt-8 w-full">
+        <Link href="/basvuru" onClick={() => setOpen(false)} className="btn-white mt-8 w-full">
           Bayilik Başvurusu <span aria-hidden="true">↗</span>
         </Link>
       </div>

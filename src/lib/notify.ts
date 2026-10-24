@@ -28,10 +28,10 @@ export async function notifyNewApplication(ref: string, a: ApplicationData, conc
     ["Ek açıklama", a.note || "Yok"],
   ];
   const link = `${SITE_URL}/admin/basvurular?q=${encodeURIComponent(ref)}`;
-  const html = `<div style="font-family:Arial,sans-serif;color:#1b1411">
+  const html = `<div style="font-family:Arial,sans-serif;color:#0f1a2e">
 <h2 style="font-weight:normal">Yeni bayilik başvurusu</h2>
 <table cellpadding="8" style="border-collapse:collapse">${rows
-    .map(([k, v]) => `<tr><td style="border-bottom:1px solid #e6ddcf;color:#6b5f55">${esc(k)}</td><td style="border-bottom:1px solid #e6ddcf">${esc(v)}</td></tr>`)
+    .map(([k, v]) => `<tr><td style="border-bottom:1px solid #dbe1ea;color:#4a566b">${esc(k)}</td><td style="border-bottom:1px solid #dbe1ea">${esc(v)}</td></tr>`)
     .join("")}</table>
 <p><a href="${esc(link)}">Başvuruyu yönetim panelinde açın</a></p></div>`;
 

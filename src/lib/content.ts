@@ -1,6 +1,6 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import { DEFAULT_CONCEPTS, DEFAULT_JOURNEY, DEFAULT_TEXT } from "@/lib/defaults";
+import { DEFAULT_CONCEPTS, DEFAULT_JOURNEY, DEFAULT_TEXT, withDefaultMedia } from "@/lib/defaults";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createPublicClient } from "@/lib/supabase/public";
 import { CONTENT_KEYS, type Concept, type GalleryImage, type SiteData, type SiteText } from "@/lib/types";
@@ -87,7 +87,7 @@ export async function getSiteData(): Promise<SiteData> {
 
     cacheLife("hours");
     return {
-      concepts: (concepts.data as ConceptRow[]).map(mapConcept),
+      concepts: (concepts.data as ConceptRow[]).map((row) => withDefaultMedia(mapConcept(row))),
       journey: (journey.data ?? []).map((s) => ({
         id: s.id,
         sortOrder: s.sort_order,

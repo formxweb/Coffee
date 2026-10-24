@@ -194,6 +194,8 @@ export async function saveJourney(_prev: ActionState, formData: FormData): Promi
   return { ok: true, message: "Yatırım süreci kaydedildi; sitede güncellendi." };
 }
 
+const URL_KEYS = new Set<string>(["contact.instagram", "contact.website", "brand.logo_url", "hero.video_url", "hero.video_wide_url"]);
+
 export async function saveSiteText(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const { supabase } = await requireAdmin();
   const rows: { key: string; value: string }[] = [];
@@ -202,7 +204,7 @@ export async function saveSiteText(_prev: ActionState, formData: FormData): Prom
     if (v === null) continue;
     const value = String(v).trim();
     if (value.length > 4000) return { ok: false, message: "Metinler en fazla 4000 karakter olabilir." };
-    if ((key === "contact.instagram" || key === "contact.website" || key === "brand.logo_url") && value && !/^https:\/\//.test(value)) {
+    if (URL_KEYS.has(key) && value && !/^https:\/\//.test(value)) {
       return { ok: false, message: "Bağlantılar https:// ile başlamalı." };
     }
     if (key === "contact.email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {

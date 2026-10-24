@@ -31,15 +31,15 @@ function AdminNavInner({ pathname }: { pathname: string }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={`flex items-center justify-between gap-3 whitespace-nowrap px-3 py-3 text-sm lg:px-0 ${
-                  active ? "text-ivory" : "text-mist hover:text-ivory"
+                  active ? "text-white" : "text-soft hover:text-white"
                 }`}
               >
                 <span className="flex items-center gap-3">
-                  <span aria-hidden="true" className={`h-1.5 w-1.5 ${active ? "bg-copper-light" : "bg-transparent"}`} />
+                  <span aria-hidden="true" className={`h-1.5 w-1.5 ${active ? "bg-blue-light" : "bg-transparent"}`} />
                   {item.label}
                 </span>
                 {item.live && live > 0 && (
-                  <span className="label tabular text-copper-light" aria-label={`${live} yeni başvuru`}>
+                  <span className="label tabular text-blue-light" aria-label={`${live} yeni başvuru`}>
                     +{live}
                   </span>
                 )}
@@ -48,7 +48,7 @@ function AdminNavInner({ pathname }: { pathname: string }) {
           );
         })}
         <li className="lg:border-b lg:border-line-dark">
-          <Link href="/" target="_blank" className="flex items-center gap-3 whitespace-nowrap px-3 py-3 text-sm text-mist hover:text-ivory lg:px-0">
+          <Link href="/" target="_blank" className="flex items-center gap-3 whitespace-nowrap px-3 py-3 text-sm text-soft hover:text-white lg:px-0">
             <span aria-hidden="true" className="h-1.5 w-1.5" />
             Siteyi görüntüle ↗
           </Link>

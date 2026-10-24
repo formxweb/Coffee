@@ -21,12 +21,12 @@ export function MobileApplyBar() {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line-dark bg-espresso p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] transition-transform duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-line-dark bg-navy p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] transition-transform duration-300 lg:hidden ${
         visible ? "translate-y-0" : "translate-y-full"
       }`}
       inert={!visible}
     >
-      <Link href={concept ? `/basvuru?konsept=${concept}` : "/basvuru"} className="btn-solid w-full">
+      <Link href={concept ? `/basvuru?konsept=${concept}` : "/basvuru"} className="btn-white w-full">
         Bayilik Başvurusu <span aria-hidden="true">↗</span>
       </Link>
     </div>

@@ -25,7 +25,7 @@ type Activity = {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid gap-1 border-b border-line py-4 sm:grid-cols-[12rem_1fr] sm:gap-6">
-      <dt className="label text-stone">{label}</dt>
+      <dt className="label text-muted">{label}</dt>
       <dd className="text-ink">{children}</dd>
     </div>
   );
@@ -52,14 +52,14 @@ async function Detail({ id }: { id: string }) {
   return (
     <>
       <header className="border-b border-line px-5 pb-8 pt-10 sm:px-8 lg:px-12 lg:pt-14">
-        <Link href="/admin/basvurular" className="label text-stone hover:text-ink">
+        <Link href="/admin/basvurular" className="label text-muted hover:text-ink">
           ← Başvurular
         </Link>
         <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="label tabular text-copper-ink">{a.ref_code}</p>
+            <p className="label tabular text-blue-ink">{a.ref_code}</p>
             <h1 className="mt-3 text-5xl">{a.full_name}</h1>
-            <p className="mt-3 text-stone">
+            <p className="mt-3 text-muted">
               {formatDateTime(a.created_at)} tarihinde başvurdu · <StatusMark status={a.status} />
             </p>
           </div>
@@ -86,7 +86,7 @@ async function Detail({ id }: { id: string }) {
 
       <div className="grid gap-12 px-5 pb-16 pt-8 sm:px-8 lg:grid-cols-12 lg:px-12">
         <div className="lg:col-span-7">
-          <h2 className="label text-stone">Başvuru bilgileri</h2>
+          <h2 className="label text-muted">Başvuru bilgileri</h2>
           <dl className="mt-4 border-t border-line">
             <Row label="Konsept">{conceptLabel(a.concept, concepts)}</Row>
             <Row label="Lokasyon">
@@ -105,22 +105,22 @@ async function Detail({ id }: { id: string }) {
                   {a.email}
                 </a>
               ) : (
-                <span className="text-stone">Belirtilmedi</span>
+                <span className="text-muted">Belirtilmedi</span>
               )}
             </Row>
-            <Row label="Ek açıklama">{a.note ? <span className="whitespace-pre-line">{a.note}</span> : <span className="text-stone">Yok</span>}</Row>
+            <Row label="Ek açıklama">{a.note ? <span className="whitespace-pre-line">{a.note}</span> : <span className="text-muted">Yok</span>}</Row>
             <Row label="KVKK onayı">{a.kvkk_consent ? `Verildi (${formatDateTime(a.created_at)})` : "Yok"}</Row>
             <Row label="Ticari ileti onayı">{a.marketing_consent ? "Verildi" : "Verilmedi"}</Row>
-            <Row label="Kaynak">{source || (utm.referrer ? utm.referrer : <span className="text-stone">Doğrudan</span>)}</Row>
+            <Row label="Kaynak">{source || (utm.referrer ? utm.referrer : <span className="text-muted">Doğrudan</span>)}</Row>
             {a.source_path && <Row label="Başvuru sayfası">{a.source_path}</Row>}
           </dl>
 
-          <h2 className="label mt-14 text-stone">Geçmiş ve notlar</h2>
+          <h2 className="label mt-14 text-muted">Geçmiş ve notlar</h2>
           {activity && activity.length > 0 ? (
             <ol className="mt-4 border-t border-line">
               {(activity as Activity[]).map((item) => (
                 <li key={item.id} className="border-b border-line py-4">
-                  <p className="text-xs text-stone tabular">
+                  <p className="text-xs text-muted tabular">
                     {formatDateTime(item.created_at)} · {item.author_email ?? "Sistem"}
                   </p>
                   {item.kind === "note" ? (
@@ -134,7 +134,7 @@ async function Detail({ id }: { id: string }) {
               ))}
             </ol>
           ) : (
-            <p className="mt-4 border-t border-line pt-4 text-stone">Henüz not ya da durum değişikliği yok.</p>
+            <p className="mt-4 border-t border-line pt-4 text-muted">Henüz not ya da durum değişikliği yok.</p>
           )}
         </div>
 

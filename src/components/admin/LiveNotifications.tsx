@@ -79,17 +79,17 @@ export function LiveNotifications({ children }: { children: React.ReactNode }) {
       <div aria-live="polite" className="pointer-events-none fixed right-4 top-4 z-50 grid w-[min(22rem,calc(100vw-2rem))] gap-2">
         {items.map((item) => (
           <div key={item.id} className="pointer-events-auto border border-line bg-paper p-4 shadow-[0_12px_30px_-18px_rgba(27,20,17,0.5)]">
-            <p className="label text-copper-ink">Yeni başvuru · {item.ref_code}</p>
+            <p className="label text-blue-ink">Yeni başvuru · {item.ref_code}</p>
             <p className="mt-2 text-ink">
               {item.full_name}, {item.city}
             </p>
             <div className="mt-3 flex items-center justify-between gap-4 text-sm">
-              <Link href={`/admin/basvurular/${item.id}`} className="text-copper-ink underline underline-offset-4">
+              <Link href={`/admin/basvurular/${item.id}`} className="text-blue-ink underline underline-offset-4">
                 Başvuruyu aç
               </Link>
               <button
                 type="button"
-                className="text-stone hover:text-ink"
+                className="text-muted hover:text-ink"
                 onClick={() => setItems((prev) => prev.filter((p) => p.id !== item.id))}
               >
                 Kapat

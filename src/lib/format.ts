@@ -26,6 +26,11 @@ export function millionsLabel(c: Pick<Concept, "priceMin" | "priceMax">): string
   return c.priceMin === c.priceMax ? millions(c.priceMin) : `${millions(c.priceMin)}–${millions(c.priceMax)}`;
 }
 
+/** Kısa fiyat: "2 Milyon TL" ya da "3–4 Milyon TL" */
+export function priceShort(c: Pick<Concept, "priceMin" | "priceMax">): string {
+  return `${millionsLabel(c)} Milyon TL`;
+}
+
 /** "+905321234567" → "0 (532) 123 45 67" */
 export function formatPhone(e164: string): string {
   const d = e164.replace(/\D/g, "").replace(/^90/, "");

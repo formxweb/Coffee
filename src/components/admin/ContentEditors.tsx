@@ -20,28 +20,46 @@ function Message({ state }: { state: ActionState }) {
 function Field({ label, htmlFor, hint, children }: { label: string; htmlFor: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="label text-stone">
+      <label htmlFor={htmlFor} className="label text-muted">
         {label}
       </label>
       <div className="mt-1">{children}</div>
-      {hint && <p className="mt-1 text-xs text-stone">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
     </div>
   );
 }
 
-/** Supabase Storage'a görsel yükler ve herkese açık adresini döndürür. */
-async function uploadImage(file: File, folder: string): Promise<string> {
-  if (!file.type.startsWith("image/")) throw new Error("Yalnızca görsel dosyaları yüklenebilir.");
-  if (file.size > 10 * 1024 * 1024) throw new Error("Görsel en fazla 10 MB olabilir.");
+type MediaKind = "image" | "video";
+
+const MEDIA = {
+  image: { accept: "image/jpeg,image/png,image/webp,image/avif,image/svg+xml", prefix: "image/", maxMb: 10, name: "Görsel" },
+  video: { accept: "video/mp4,video/webm", prefix: "video/", maxMb: 50, name: "Video" },
+} as const;
+
+/** Supabase Storage'a görsel ya da video yükler ve herkese açık adresini döndürür. */
+async function uploadMedia(file: File, folder: string, kind: MediaKind): Promise<string> {
+  const m = MEDIA[kind];
+  if (!file.type.startsWith(m.prefix)) throw new Error(kind === "image" ? "Yalnızca görsel dosyaları yüklenebilir." : "Yalnızca MP4 ya da WebM video yüklenebilir.");
+  if (file.size > m.maxMb * 1024 * 1024) throw new Error(`${m.name} en fazla ${m.maxMb} MB olabilir.`);
   const supabase = createBrowserSupabase();
-  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const ext = (file.name.split(".").pop() || (kind === "image" ? "jpg" : "mp4")).toLowerCase().replace(/[^a-z0-9]/g, "");
   const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await supabase.storage.from("site-media").upload(path, file, { contentType: file.type, upsert: false });
-  if (error) throw new Error("Görsel yüklenemedi. Depolama alanının kurulu olduğundan emin olun.");
+  if (error) throw new Error(`${m.name} yüklenemedi. Depolama alanının kurulu olduğundan emin olun.`);
   return supabase.storage.from("site-media").getPublicUrl(path).data.publicUrl;
 }
 
-function UploadButton({ folder, onUploaded, label = "Görsel yükle" }: { folder: string; onUploaded: (url: string) => void; label?: string }) {
+function UploadButton({
+  folder,
+  onUploaded,
+  label = "Görsel yükle",
+  kind = "image",
+}: {
+  folder: string;
+  onUploaded: (url: string) => void;
+  label?: string;
+  kind?: MediaKind;
+}) {
   const id = useId();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -53,7 +71,7 @@ function UploadButton({ folder, onUploaded, label = "Görsel yükle" }: { folder
       <input
         id={id}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/avif,image/svg+xml"
+        accept={MEDIA[kind].accept}
         className="sr-only"
         disabled={busy}
         onChange={async (e) => {
@@ -63,9 +81,9 @@ function UploadButton({ folder, onUploaded, label = "Görsel yükle" }: { folder
           setBusy(true);
           setError("");
           try {
-            onUploaded(await uploadImage(file, folder));
+            onUploaded(await uploadMedia(file, folder, kind));
           } catch (err) {
-            setError(err instanceof Error ? err.message : "Görsel yüklenemedi.");
+            setError(err instanceof Error ? err.message : `${MEDIA[kind].name} yüklenemedi.`);
           } finally {
             setBusy(false);
           }
@@ -81,7 +99,7 @@ function UploadButton({ folder, onUploaded, label = "Görsel yükle" }: { folder
 }
 
 function Preview({ url, alt }: { url: string; alt: string }) {
-  if (!url) return <div className="grid aspect-[4/3] w-40 place-items-center border border-dashed border-line text-xs text-stone">Görsel yok</div>;
+  if (!url) return <div className="grid aspect-[4/3] w-40 place-items-center border border-dashed border-line text-xs text-muted">Görsel yok</div>;
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={url} alt={alt} className="aspect-[4/3] w-40 border border-line object-cover" />;
 }
@@ -104,7 +122,7 @@ export function ConceptEditor({ concept }: { concept: Concept }) {
           {concept.code} · {concept.name}
         </h3>
         <label className="flex items-center gap-3 text-sm">
-          <input type="checkbox" name="is_published" defaultChecked={concept.isPublished} className="h-4 w-4 accent-[var(--color-copper)]" />
+          <input type="checkbox" name="is_published" defaultChecked={concept.isPublished} className="h-4 w-4 accent-[var(--color-blue)]" />
           Sitede yayında
         </label>
       </div>
@@ -162,8 +180,8 @@ export function ConceptEditor({ concept }: { concept: Concept }) {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div>
-          <p className="label text-stone">Ana görsel</p>
-          <p className="mt-1 text-xs text-stone">Yüklenmezse sitede temsili plan çizimi gösterilir.</p>
+          <p className="label text-muted">Ana görsel</p>
+          <p className="mt-1 text-xs text-muted">Yüklenmezse sitede temsili plan çizimi gösterilir.</p>
           <div className="mt-3 flex flex-wrap items-start gap-4">
             <Preview url={hero} alt={heroAlt} />
             <div className="grid flex-1 gap-3">
@@ -179,7 +197,7 @@ export function ConceptEditor({ concept }: { concept: Concept }) {
           </div>
         </div>
         <div>
-          <p className="label text-stone">Galeri ({gallery.length})</p>
+          <p className="label text-muted">Galeri ({gallery.length})</p>
           <ul className="mt-3 grid gap-3">
             {gallery.map((g, i) => (
               <li key={`${g.url}-${i}`} className="flex flex-wrap items-start gap-3 border-b border-line pb-3">
@@ -236,7 +254,7 @@ export function JourneyEditor({ steps: initial }: { steps: JourneyStep[] }) {
       <ol className="border-t border-line">
         {steps.map((s, i) => (
           <li key={s.id} className="grid gap-4 border-b border-line py-5 lg:grid-cols-[3rem_1fr_2fr_auto] lg:items-start">
-            <span className="label pt-3 tabular text-copper-ink">{String(i + 1).padStart(2, "0")}</span>
+            <span className="label pt-3 tabular text-blue-ink">{String(i + 1).padStart(2, "0")}</span>
             <div>
               <label htmlFor={`adim-${s.id}-baslik`} className="sr-only">
                 {i + 1}. adım başlığı
@@ -319,6 +337,16 @@ const TEXT_GROUPS: { title: string; fields: { key: keyof SiteText; label: string
       { key: "hero.line2", label: "Başlık, 2. satır" },
       { key: "hero.line3", label: "Başlık, 3. satır" },
       { key: "hero.subtitle", label: "Alt başlık", long: true },
+      {
+        key: "hero.video_url",
+        label: "Giriş videosu, dikey (telefon)",
+        hint: "MP4, en fazla 50 MB. Boş bırakılırsa şube tanıtım videosu oynar.",
+      },
+      {
+        key: "hero.video_wide_url",
+        label: "Giriş videosu, yatay (bilgisayar)",
+        hint: "Boş bırakılırsa bilgisayarda da dikey video kullanılır.",
+      },
       { key: "about.title", label: "Hakkımızda başlığı" },
       { key: "about.body", label: "Hakkımızda metni", long: true },
       { key: "cta.title", label: "Başvuru çağrısı başlığı" },
@@ -349,31 +377,54 @@ const TEXT_GROUPS: { title: string; fields: { key: keyof SiteText; label: string
   },
 ];
 
+/** Adresi elle yazılabilen ya da dosya yüklenerek doldurulan alanlar */
+const MEDIA_FIELDS: Partial<Record<keyof SiteText, { folder: string; label: string; kind: MediaKind }>> = {
+  "brand.logo_url": { folder: "marka", label: "Logo yükle", kind: "image" },
+  "hero.video_url": { folder: "video", label: "Dikey video yükle", kind: "video" },
+  "hero.video_wide_url": { folder: "video", label: "Yatay video yükle", kind: "video" },
+};
+
 export function SiteTextEditor({ text }: { text: SiteText }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(saveSiteText, null);
-  const [logo, setLogo] = useState(text["brand.logo_url"]);
+  const [media, setMedia] = useState<Partial<Record<keyof SiteText, string>>>(() =>
+    Object.fromEntries(Object.keys(MEDIA_FIELDS).map((k) => [k, text[k as keyof SiteText]])),
+  );
   return (
     <form action={action} className="grid gap-12">
       {TEXT_GROUPS.map((group) => (
         <fieldset key={group.title} className="border-t border-line pt-6">
-          <legend className="label pr-4 text-copper-ink">{group.title}</legend>
+          <legend className="label pr-4 text-blue-ink">{group.title}</legend>
           <div className="mt-4 grid gap-6 lg:grid-cols-2">
-            {group.fields.map((f) => (
-              <div key={f.key} className={f.long ? "lg:col-span-2" : ""}>
-                <Field label={f.label} htmlFor={`metin-${f.key}`} hint={f.hint}>
-                  {f.key === "brand.logo_url" ? (
-                    <div className="grid gap-3">
-                      <input id={`metin-${f.key}`} name={f.key} value={logo} onChange={(e) => setLogo(e.target.value)} className={input} />
-                      <UploadButton folder="marka" label="Logo yükle" onUploaded={setLogo} />
-                    </div>
-                  ) : f.long ? (
-                    <textarea id={`metin-${f.key}`} name={f.key} defaultValue={text[f.key]} rows={3} maxLength={4000} className={`${input} resize-y`} />
-                  ) : (
-                    <input id={`metin-${f.key}`} name={f.key} defaultValue={text[f.key]} maxLength={400} className={input} />
-                  )}
-                </Field>
-              </div>
-            ))}
+            {group.fields.map((f) => {
+              const upload = MEDIA_FIELDS[f.key];
+              return (
+                <div key={f.key} className={f.long ? "lg:col-span-2" : ""}>
+                  <Field label={f.label} htmlFor={`metin-${f.key}`} hint={f.hint}>
+                    {upload ? (
+                      <div className="grid gap-3">
+                        <input
+                          id={`metin-${f.key}`}
+                          name={f.key}
+                          value={media[f.key] ?? ""}
+                          onChange={(e) => setMedia((m) => ({ ...m, [f.key]: e.target.value }))}
+                          className={input}
+                        />
+                        <UploadButton
+                          folder={upload.folder}
+                          label={upload.label}
+                          kind={upload.kind}
+                          onUploaded={(url) => setMedia((m) => ({ ...m, [f.key]: url }))}
+                        />
+                      </div>
+                    ) : f.long ? (
+                      <textarea id={`metin-${f.key}`} name={f.key} defaultValue={text[f.key]} rows={3} maxLength={4000} className={`${input} resize-y`} />
+                    ) : (
+                      <input id={`metin-${f.key}`} name={f.key} defaultValue={text[f.key]} maxLength={400} className={input} />
+                    )}
+                  </Field>
+                </div>
+              );
+            })}
           </div>
         </fieldset>
       ))}

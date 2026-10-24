@@ -28,7 +28,7 @@ async function Editors() {
     <div className="grid gap-20 px-5 pb-20 pt-8 sm:px-8 lg:px-12">
       <section id="konseptler" aria-labelledby="konseptler-baslik">
         <h2 id="konseptler-baslik" className="text-4xl">Konseptler ve fiyatlar</h2>
-        <p className="mt-3 max-w-2xl text-stone">
+        <p className="mt-3 max-w-2xl text-muted">
           Fiyat, metrekare ve metin değişiklikleri kaydedildiği anda sitede görünür. Yatırım tutarı tek ise en düşük ve en yüksek alanlara aynı tutarı yazın.
         </p>
         <div className="mt-8 grid gap-14">
@@ -40,7 +40,7 @@ async function Editors() {
       </section>
       <section id="surec" aria-labelledby="surec-baslik">
         <h2 id="surec-baslik" className="text-4xl">Yatırım süreci</h2>
-        <p className="mt-3 max-w-2xl text-stone">Ana sayfadaki süreç adımları. Sıralamayı oklarla değiştirebilir, adım ekleyip silebilirsiniz.</p>
+        <p className="mt-3 max-w-2xl text-muted">Ana sayfadaki süreç adımları. Sıralamayı oklarla değiştirebilir, adım ekleyip silebilirsiniz.</p>
         <div className="mt-8">
           <JourneyEditor
             steps={(journey.data ?? []).map((s) => ({ id: s.id, sortOrder: s.sort_order, title: s.title, description: s.description }))}
@@ -49,7 +49,7 @@ async function Editors() {
       </section>
       <section id="metinler" aria-labelledby="metinler-baslik">
         <h2 id="metinler-baslik" className="text-4xl">Site metinleri</h2>
-        <p className="mt-3 max-w-2xl text-stone">Ana sayfa metinleri, iletişim bilgileri ve yasal metinlerde kullanılan şirket bilgileri.</p>
+        <p className="mt-3 max-w-2xl text-muted">Ana sayfa metinleri, iletişim bilgileri ve yasal metinlerde kullanılan şirket bilgileri.</p>
         <div className="mt-8">
           <SiteTextEditor text={siteText} />
         </div>
@@ -63,9 +63,9 @@ export default function ContentPage() {
     <>
       <PageHeader title="İçerik ve fiyatlar" eyebrow="Site yönetimi">
         <nav aria-label="Bölümler" className="flex flex-wrap gap-6 text-sm">
-          <a href="#konseptler" className="text-stone hover:text-ink">Konseptler</a>
-          <a href="#surec" className="text-stone hover:text-ink">Yatırım süreci</a>
-          <a href="#metinler" className="text-stone hover:text-ink">Site metinleri</a>
+          <a href="#konseptler" className="text-muted hover:text-ink">Konseptler</a>
+          <a href="#surec" className="text-muted hover:text-ink">Yatırım süreci</a>
+          <a href="#metinler" className="text-muted hover:text-ink">Site metinleri</a>
         </nav>
       </PageHeader>
       <Suspense fallback={<PanelSkeleton rows={12} />}>

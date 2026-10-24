@@ -16,15 +16,15 @@ const PAGE_SIZE = 25;
 type SP = Promise<Record<string, string | string[] | undefined>>;
 
 function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: string; name: string }[] }) {
-  const field = "w-full border-0 border-b border-line bg-transparent py-2 text-sm focus:border-copper focus:outline-none";
+  const field = "w-full border-0 border-b border-line bg-transparent py-2 text-sm focus:border-blue focus:outline-none";
   return (
     <form method="get" className="grid gap-x-6 gap-y-5 border-b border-line py-6 sm:grid-cols-2 lg:grid-cols-6" role="search">
       <div className="sm:col-span-2">
-        <label htmlFor="f-q" className="label text-stone">Ara</label>
+        <label htmlFor="f-q" className="label text-muted">Ara</label>
         <input id="f-q" name="q" defaultValue={f.q} placeholder="Ad, telefon, e-posta ya da referans" className={field} />
       </div>
       <div>
-        <label htmlFor="f-durum" className="label text-stone">Durum</label>
+        <label htmlFor="f-durum" className="label text-muted">Durum</label>
         <select id="f-durum" name="durum" defaultValue={f.durum} className={field}>
           <option value="">Tümü</option>
           {APPLICATION_STATUSES.map((s) => (
@@ -33,7 +33,7 @@ function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: s
         </select>
       </div>
       <div>
-        <label htmlFor="f-konsept" className="label text-stone">Konsept</label>
+        <label htmlFor="f-konsept" className="label text-muted">Konsept</label>
         <select id="f-konsept" name="konsept" defaultValue={f.konsept} className={field}>
           <option value="">Tümü</option>
           {concepts.map((c) => (
@@ -43,7 +43,7 @@ function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: s
         </select>
       </div>
       <div>
-        <label htmlFor="f-butce" className="label text-stone">Bütçe</label>
+        <label htmlFor="f-butce" className="label text-muted">Bütçe</label>
         <select id="f-butce" name="butce" defaultValue={f.butce} className={field}>
           <option value="">Tümü</option>
           {BUDGETS.map((b) => (
@@ -52,7 +52,7 @@ function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: s
         </select>
       </div>
       <div>
-        <label htmlFor="f-mulk" className="label text-stone">Mülk</label>
+        <label htmlFor="f-mulk" className="label text-muted">Mülk</label>
         <select id="f-mulk" name="mulk" defaultValue={f.mulk} className={field}>
           <option value="">Tümü</option>
           <option value="ready">Hazır dükkânı var</option>
@@ -60,7 +60,7 @@ function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: s
         </select>
       </div>
       <div>
-        <label htmlFor="f-il" className="label text-stone">İl</label>
+        <label htmlFor="f-il" className="label text-muted">İl</label>
         <select id="f-il" name="il" defaultValue={f.il} className={field}>
           <option value="">Tümü</option>
           {ILLER.map((il) => (
@@ -69,22 +69,22 @@ function FilterBar({ f, concepts }: { f: ApplicationFilters; concepts: { slug: s
         </select>
       </div>
       <div>
-        <label htmlFor="f-ilce" className="label text-stone">İlçe</label>
+        <label htmlFor="f-ilce" className="label text-muted">İlçe</label>
         <input id="f-ilce" name="ilce" defaultValue={f.ilce} className={field} />
       </div>
       <div>
-        <label htmlFor="f-bas" className="label text-stone">Başlangıç</label>
+        <label htmlFor="f-bas" className="label text-muted">Başlangıç</label>
         <input id="f-bas" name="baslangic" type="date" defaultValue={f.baslangic} className={field} />
       </div>
       <div>
-        <label htmlFor="f-bit" className="label text-stone">Bitiş</label>
+        <label htmlFor="f-bit" className="label text-muted">Bitiş</label>
         <input id="f-bit" name="bitis" type="date" defaultValue={f.bitis} className={field} />
       </div>
       <div className="flex items-end gap-4 sm:col-span-2">
         <button type="submit" className="btn-line !min-h-11 flex-1">
           Filtrele <span aria-hidden="true">↗</span>
         </button>
-        <Link href="/admin/basvurular" className="label py-3 text-stone hover:text-ink">
+        <Link href="/admin/basvurular" className="label py-3 text-muted hover:text-ink">
           Temizle
         </Link>
       </div>
@@ -125,14 +125,14 @@ async function ApplicationList({ searchParams }: { searchParams: SP }) {
           </p>
         )}
         <FilterBar f={f} concepts={concepts} />
-        <p className="py-4 text-sm text-stone" aria-live="polite">
+        <p className="py-4 text-sm text-muted" aria-live="polite">
           {error ? "Başvurular yüklenemedi." : `${new Intl.NumberFormat("tr-TR").format(total)} başvuru`}
         </p>
         {data && data.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[960px] text-left text-sm">
               <thead>
-                <tr className="border-y border-line text-stone">
+                <tr className="border-y border-line text-muted">
                   <th scope="col" className="py-3 pr-4 font-normal">Tarih</th>
                   <th scope="col" className="py-3 pr-4 font-normal">Referans</th>
                   <th scope="col" className="py-3 pr-4 font-normal">Ad Soyad</th>
@@ -146,7 +146,7 @@ async function ApplicationList({ searchParams }: { searchParams: SP }) {
               <tbody>
                 {data.map((a) => (
                   <tr key={a.id} className="border-b border-line align-top">
-                    <td className="py-3 pr-4 text-stone tabular">{formatDateTime(a.created_at)}</td>
+                    <td className="py-3 pr-4 text-muted tabular">{formatDateTime(a.created_at)}</td>
                     <td className="py-3 pr-4 tabular">{a.ref_code}</td>
                     <td className="py-3 pr-4">
                       <Link href={`/admin/basvurular/${a.id}`} className="font-medium text-ink underline-offset-4 hover:underline">
@@ -171,7 +171,7 @@ async function ApplicationList({ searchParams }: { searchParams: SP }) {
           !error && (
             <div className="border-y border-line py-12">
               <p className="text-lg text-ink">Bu filtrelerle eşleşen başvuru yok.</p>
-              <Link href="/admin/basvurular" className="mt-3 inline-block text-copper-ink underline underline-offset-4">
+              <Link href="/admin/basvurular" className="mt-3 inline-block text-blue-ink underline underline-offset-4">
                 Filtreleri temizleyin
               </Link>
             </div>
@@ -180,17 +180,17 @@ async function ApplicationList({ searchParams }: { searchParams: SP }) {
         {pages > 1 && (
           <nav aria-label="Sayfalar" className="mt-8 flex items-center justify-between gap-4 text-sm">
             {f.sayfa > 1 ? (
-              <Link href={`/admin/basvurular${filtersToQuery(f, { sayfa: f.sayfa - 1 })}`} className="label hover:text-copper-ink">
+              <Link href={`/admin/basvurular${filtersToQuery(f, { sayfa: f.sayfa - 1 })}`} className="label hover:text-blue-ink">
                 ← Önceki
               </Link>
             ) : (
               <span />
             )}
-            <span className="text-stone tabular">
+            <span className="text-muted tabular">
               Sayfa {f.sayfa} / {pages}
             </span>
             {f.sayfa < pages ? (
-              <Link href={`/admin/basvurular${filtersToQuery(f, { sayfa: f.sayfa + 1 })}`} className="label hover:text-copper-ink">
+              <Link href={`/admin/basvurular${filtersToQuery(f, { sayfa: f.sayfa + 1 })}`} className="label hover:text-blue-ink">
                 Sonraki →
               </Link>
             ) : (

@@ -433,14 +433,14 @@ $$;
 
 insert into public.concepts (slug, sort_order, code, name, short_name, area_min, area_max, price_min, price_max, tagline, description) values
   ('corner', 1, '01', 'Corner CH', 'CORNER', 30, 30, 2000000, 2000000,
-   'Kompakt Coffee House konsepti.',
-   'Corner CH, Coffee House deneyimini 30 m²''lik bir alana taşıyan kompakt konsepttir. Lokasyon ve yerleşim, ön görüşme ve lokasyon değerlendirmesinde birlikte belirlenir.'),
+   '30 m²''lik kompakt Coffee House.',
+   'Küçük bir alanda Coffee House menüsünü ve servisini sunmak isteyen yatırımcılar için kompakt model. Dükkânın yerleşimi, lokasyon değerlendirmesinden sonra alanın ölçülerine göre hazırlanır.'),
   ('mahal', 2, '02', 'Mahal CH', 'MAHAL', 100, 150, 3000000, 4000000,
-   'Orta ölçekli Coffee House konsepti.',
-   'Mahal CH, 100 ile 150 m² arasındaki alanlar için kurgulanan orta ölçekli Coffee House konseptidir. Lokasyon ve yerleşim, ön görüşme ve lokasyon değerlendirmesinde birlikte belirlenir.'),
+   '100–150 m²''lik mahalle Coffee House''u.',
+   'Semtinde misafir ağırlayan, oturma alanı olan bir Coffee House açmak isteyen yatırımcılar için orta ölçekli model. Dükkânın yerleşimi, lokasyon değerlendirmesinden sonra alanın ölçülerine göre hazırlanır.'),
   ('agora', 3, '03', 'Agora CH', 'AGORA', 200, 200, 6000000, 6000000,
-   'Geniş ölçekli Coffee House konsepti.',
-   'Agora CH, 200 m²''lik alanlar için kurgulanan geniş ölçekli Coffee House konseptidir. Lokasyon ve yerleşim, ön görüşme ve lokasyon değerlendirmesinde birlikte belirlenir.');
+   '200 m²''lik geniş Coffee House.',
+   'Geniş oturma alanı isteyen cadde ve merkez lokasyonları için en büyük Coffee House modeli. Dükkânın yerleşimi, lokasyon değerlendirmesinden sonra alanın ölçülerine göre hazırlanır.');
 
 insert into public.journey_steps (sort_order, title, description) values
   (1, 'Başvuru', 'Bayilik başvuru formunu doldurursunuz; başvurunuz bir referans numarasıyla kayda alınır.'),
@@ -455,10 +455,14 @@ insert into public.site_content (key, value) values
   ('hero.line2', 'Üç konsept.'),
   ('hero.line3', 'Sınırsız vizyon.'),
   ('hero.subtitle', 'Coffee House yatırım modelleriyle kendi işletmenizi hayata geçirin.'),
-  ('about.title', 'Kahve markası, franchise odağı.'),
-  ('about.body', 'Coffee House bir kahve dükkânı markasıdır; bugün odağında markayı franchise modeliyle yeni lokasyonlara taşımak var. Corner, Mahal ve Agora konseptleri, farklı ölçek ve bütçedeki yatırımcılara aynı marka deneyimini sunmak için üç ayrı ölçekte kurgulandı.'),
-  ('cta.title', 'Coffee House yatırımınızı birlikte planlayalım.'),
-  ('cta.body', 'Başvurunuzu bırakın; ekibimiz ön görüşme için sizinle iletişime geçsin.'),
+  ('hero.video_url', ''),
+  ('hero.video_wide_url', ''),
+  ('about.title', 'Kendi dükkânımızı işletiyor, aynısını sizin için kuruyoruz.'),
+  ('about.body', 'Coffee House kendi şubesini işleten bir kahve markasıdır. Asıl işimiz, yatırımcılarımıza anahtar teslim Coffee House dükkânı kurmaktır.
+
+Şubemizde ne sunuyorsak sizin dükkânınızda da onu kuruyoruz: aynı marka, aynı menü, aynı düzen. Lokasyon değerlendirmesinden açılış gününe kadar süreci birlikte yürütüyoruz.'),
+  ('cta.title', 'Bilgilerinizi bırakın, fizibilite raporuyla sizi arayalım.'),
+  ('cta.body', 'Başvuru formu birkaç dakika sürer. Ekibimiz başvurunuzu inceleyip ön görüşme için sizinle iletişime geçer.'),
   ('contact.phone', ''),
   ('contact.whatsapp', ''),
   ('contact.email', ''),

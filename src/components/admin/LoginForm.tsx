@@ -11,13 +11,13 @@ export function LoginForm() {
     <form action={action} className="grid gap-8">
       <input type="hidden" name="next" value={params.get("sonra") ?? ""} />
       <div>
-        <label htmlFor="email" className="label text-stone">
+        <label htmlFor="email" className="label text-muted">
           E-posta
         </label>
         <input id="email" name="email" type="email" autoComplete="username" required className="field-input mt-2" />
       </div>
       <div>
-        <label htmlFor="password" className="label text-stone">
+        <label htmlFor="password" className="label text-muted">
           Şifre
         </label>
         <input id="password" name="password" type="password" autoComplete="current-password" required className="field-input mt-2" />
