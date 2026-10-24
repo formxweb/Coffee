@@ -86,12 +86,6 @@ export function Contact({ text }: { text: SiteText }) {
       href: text["contact.instagram"],
       external: true,
     },
-    text["contact.website"] && {
-      label: "Web sitesi",
-      value: text["contact.website"].replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, ""),
-      href: text["contact.website"],
-      external: true,
-    },
     text["contact.address"] && { label: "Adres", value: text["contact.address"] },
   ].filter(Boolean) as { label: string; value: string; href?: string; external?: boolean }[];
 
